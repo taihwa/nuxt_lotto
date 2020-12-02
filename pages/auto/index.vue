@@ -11,9 +11,12 @@
             <b-button v-b-modal.modal-2 variant="success" @click="getStatic()" href="#">많이 나온 번호 추첨</b-button>
         </b-jumbotron>
         <b-modal id="modal-1" title="전체 번호 추첨" class="align-middle">
-            <lottie :width="1024" :height="1024" :options="lottieOptions" v-on:animCreated="handleAnimation" />
+            <lottie :options="lottieOptions" v-on:animCreated="handleAnimation" />
             <div style="text-align:center">
                 <b-avatar v-for="(num, index) in totalLottoNum" :key="'D' + index"  :variant="numberVariants[index]" :text="num.toString()" class="mr-1"></b-avatar>
+            </div>
+            <div>
+              <b-button block variant="info" @click="sendKakao()">카카오톡으로 번호 보내기</b-button>
             </div>
         </b-modal>
         <b-modal id="modal-2" title="많이 나온 번호 추첨" class="align-middle">
@@ -25,12 +28,12 @@
             <b-button block variant="info" @click="customAuto(30)">많이 나온 번호 30개로 추첨</b-button>
             <b-avatar v-for="(num, index) in limit30" :key="'C' + index"  :variant="numberVariants[index]" :text="num.toString()" class="mr-1"></b-avatar>
             <b-collapse id="static-collapse">
-                <b-table id="static-table" 
+                <b-table id="static-table"
                     striped
-                    hover 
-                    :items="staticManyNums" 
+                    hover
+                    :items="staticManyNums"
                     :fields="fields"
-                    :sort-by.sync="sortBy" 
+                    :sort-by.sync="sortBy"
                     :sort-desc.sync="sortDesc"
                     :per-page="perPage"
                     :current-page="currentPage"
@@ -74,7 +77,7 @@ export default {
       numberVariants: ['primary', 'info', 'success', 'danger', 'warning', 'secondary'],
       staticManyNums: [],
       totalNumbers: [],
-      limit10: [], 
+      limit10: [],
       limit20: [],
       limit30: [],
       totalLottoNum: [],
@@ -99,6 +102,10 @@ export default {
     }
 },
   methods: {
+    async sendKakao() {
+      const result = await axios.post('http://lotto.tenpm.kr/kakao', this.totalLottoNum)
+      console.log(result)
+    },
       handleAnimation: function (anim) {
         this.anim = anim;
         },
@@ -109,9 +116,9 @@ export default {
       },
       getCompleteNum(numbers) {
           // 로또 배열에다가 번호를 1부터 45까지 numbers에 넣는다.
-          let selectedNumber = []  
+          let selectedNumber = []
           for (let i = 0; i < 6; i++) {
-            let lottoNumbers = this.getLottoNum(numbers, selectedNumber, i)   
+            let lottoNumbers = this.getLottoNum(numbers, selectedNumber, i)
             selectedNumber.push(lottoNumbers)
           }
           return selectedNumber
@@ -141,7 +148,7 @@ export default {
         } else {
             return lottoNum
         }
-        
+
       },
       async getStatic() {
           this.staticManyNums = []
