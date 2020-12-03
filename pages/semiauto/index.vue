@@ -3,7 +3,7 @@
         <b-jumbotron header-level="5">
             <template #header style="font-size:10px">반자동 추첨하기</template>
             <template #lead>
-            로또 번호를 반자동으로 추첨 하는 곳입니다. 원하는 숫자를 넣으신 후 나머지 번호는 자동으로 추첨해 보세요
+            로또 번호를 반자동으로 추첨 하는 곳입니다. 원하는 숫자를 넣으신 후 나머지 번호는 자동으로 추첨해 보세요.
             </template>
             <hr class="my-4">
             <b-button v-b-modal.modal-1 variant="primary" href="#" class="mr-1">반자동 번호 추첨</b-button>
@@ -51,13 +51,17 @@ export default {
       lottoTotalNum: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45]
   }),
   methods: {
+      async numToServer(data) {
+        let result = await axios.post('http://lottoapi.tenpm.kr/save_num', data)
+        console.log(result)
+    },
       getSemiAutoNum() {
           let manualNum = this.sudongs.map((number) => {
               let key = Object.keys(number)
               return parseInt(number[key]) 
           })
           this.selectedNumber = this.getCompleteNum(manualNum)
-          console.log(this.selectedNumber)
+          this.numToServer(this.selectedNumber)
       },
       semiAutoCntChange() {
           this.sudongs = []

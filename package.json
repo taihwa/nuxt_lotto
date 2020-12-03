@@ -2,6 +2,12 @@
   "name": "nuxt_lotto",
   "version": "1.0.0",
   "private": true,
+  "config": {
+    "nuxt": {
+      "host": "0.0.0.0",
+      "port": "5558"
+    }
+  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
@@ -15,6 +21,7 @@
     "core-js": "^3.6.5",
     "lottie-vuejs": "^0.4.0",
     "nuxt": "^2.14.6",
+    "vue-clipboards": "^1.3.0",
     "vue-lottie": "^0.2.1"
   },
   "devDependencies": {}
